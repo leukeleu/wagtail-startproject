@@ -1,1 +1,3 @@
+include *.rst
+include *.md
 recursive-include wagtailstartproject/project_template *
