@@ -6,21 +6,21 @@ from django.db import migrations
 
 def create_homepage(apps, schema_editor):
     # Get models
-    ContentType = apps.get_model('contenttypes.ContentType')
-    Page = apps.get_model('wagtailcore.Page')
-    Site = apps.get_model('wagtailcore.Site')
-    HomePage = apps.get_model('pages.HomePage')
+    contenttype = apps.get_model('contenttypes.ContentType')
+    page = apps.get_model('wagtailcore.Page')
+    site = apps.get_model('wagtailcore.Site')
+    homepage = apps.get_model('pages.HomePage')
 
     # Delete the default homepage
     # If migration is run multiple times, it may have already been deleted
-    Page.objects.filter(id=2).delete()
+    page.objects.filter(id=2).delete()
 
     # Create content type for homepage model
-    homepage_content_type, __ = ContentType.objects.get_or_create(
+    homepage_content_type, __ = contenttype.objects.get_or_create(
         model='homepage', app_label='pages')
 
     # Create a new homepage
-    homepage = HomePage.objects.create(
+    new_homepage = homepage.objects.create(
         title="Home",
         slug='home',
         content_type=homepage_content_type,
@@ -31,21 +31,21 @@ def create_homepage(apps, schema_editor):
     )
 
     # Create a site with the new homepage set as the root
-    Site.objects.create(
-        hostname='localhost', root_page=homepage, is_default_site=True)
+    site.objects.create(
+        hostname='localhost', root_page=new_homepage, is_default_site=True)
 
 
 def remove_homepage(apps, schema_editor):
     # Get models
-    ContentType = apps.get_model('contenttypes.ContentType')
-    HomePage = apps.get_model('pages.HomePage')
+    contenttype = apps.get_model('contenttypes.ContentType')
+    homepage = apps.get_model('pages.HomePage')
 
     # Delete the default homepage
     # Page and Site objects CASCADE
-    HomePage.objects.filter(slug='home', depth=2).delete()
+    homepage.objects.filter(slug='home', depth=2).delete()
 
     # Delete content type for homepage model
-    ContentType.objects.filter(model='homepage', app_label='pages').delete()
+    contenttype.objects.filter(model='homepage', app_label='pages').delete()
 
 
 class Migration(migrations.Migration):

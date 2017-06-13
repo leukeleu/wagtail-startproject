@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
+
 from optparse import OptionParser
 
 from django.core.management import ManagementUtility
@@ -26,7 +27,7 @@ def create_project(parser, options, arguments):
                      "Python module and cannot be used as a project "
                      "name. Please try another name." % project_name)
 
-    print("Creating a Wagtail project called %(project_name)s" % {'project_name': project_name})  # noqa
+    print("Creating a Wagtail project called %(project_name)s" % {'project_name': project_name})
 
     # Create the project from the Wagtail template using startapp
 
@@ -48,7 +49,7 @@ def create_project(parser, options, arguments):
     utility = ManagementUtility(utility_args)
     utility.execute()
 
-    print("Success! %(project_name)s has been created" % {'project_name': project_name})  # noqa
+    print("Success! %(project_name)s has been created" % {'project_name': project_name})
 
 
 COMMANDS = {
@@ -62,6 +63,7 @@ def main():
     (options, arguments) = parser.parse_args()
 
     create_project(parser, options, arguments)
+
 
 if __name__ == "__main__":
     main()
