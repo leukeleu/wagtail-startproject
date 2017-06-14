@@ -1,3 +1,4 @@
+bumpversion
 check-manifest
 coverage
 flake8
