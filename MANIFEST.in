@@ -6,6 +6,7 @@ global-exclude Desktop.ini
 global-exclude *.swp
 global-exclude *~
 global-exclude *.bak
+include .bumpversion.cfg
 include .editorconfig
 include LICENSE
 include Makefile
