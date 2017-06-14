@@ -26,8 +26,9 @@ setup(
     ],
     include_package_data=True,
     zip_safe=False,
-    entry_points="""
-            [console_scripts]
-            wagtail_startproject=wagtailstartproject.wagtailstartproject:main
-    """
+    entry_points={
+        'console_scripts': [
+            'wagtail_startproject = wagtailstartproject.wagtailstartproject:main',
+        ],
+    },
 )
