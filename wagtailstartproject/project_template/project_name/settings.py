@@ -25,8 +25,8 @@ BASE_DIR = os.path.dirname(PACKAGE_DIR)
 
 config = ConfigParser(converters={'literal': json.loads}, interpolation=None)
 config.read([
-    os.path.join(CONF_DIR, 'defaults.ini'),
-    os.environ.get('APP_SETTINGS', os.path.join(CONF_DIR, 'local.ini'))
+    os.path.join(PACKAGE_DIR, 'defaults.ini'),
+    os.environ.get('APP_SETTINGS', os.path.join(PACKAGE_DIR, 'local.ini'))
 ])
 
 # Quick-start development settings - unsuitable for production
