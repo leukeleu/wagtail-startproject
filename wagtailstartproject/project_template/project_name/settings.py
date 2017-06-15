@@ -12,16 +12,33 @@ https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/
 
 from __future__ import absolute_import, unicode_literals
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import json
 import os
 
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.dirname(PROJECT_DIR)
+from configparser import ConfigParser
 
+# Default and local config files can be found here
+PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(PACKAGE_DIR)
+
+config = ConfigParser(converters={'literal': json.loads}, interpolation=None)
+config.read([
+    os.path.join(CONF_DIR, 'defaults.ini'),
+    os.environ.get('APP_SETTINGS', os.path.join(CONF_DIR, 'local.ini'))
+])
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/{{ docs_version }}/howto/deployment/checklist/
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = config.getliteral('app', 'secret_key')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config.getboolean('app', 'debug')
+
+ALLOWED_HOSTS = config.getliteral('app', 'allowed_hosts')
 
 # Application definition
 
@@ -54,14 +71,13 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
 
     'wagtail.wagtailcore.middleware.SiteMiddleware',
     'wagtail.wagtailredirects.middleware.RedirectMiddleware',
@@ -73,7 +89,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(PROJECT_DIR, 'templates'),
+            os.path.join(PACKAGE_DIR, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -95,8 +111,11 @@ WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': config.getliteral('app', 'db_host'),
+        'NAME': config.getliteral('app', 'db_name'),
+        'USER': config.getliteral('app', 'db_user'),
+        'PASSWORD': config.getliteral('app', 'db_password'),
     }
 }
 
@@ -124,7 +143,7 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, 'static'),
+    os.path.join(PACKAGE_DIR, 'static'),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

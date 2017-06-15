@@ -49,7 +49,7 @@ def create_project(project_name, legacy=False):
     utility_args = ['django-admin.py',
                     'startproject',
                     '--template=' + template_path,
-                    '--extension=py,html,rst',
+                    '--extension=py,ini,html,rst',
                     project_name]
 
     # always put the project template inside the current directory:
