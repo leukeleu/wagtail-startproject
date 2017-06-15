@@ -43,9 +43,8 @@ ALLOWED_HOSTS = config.getliteral('app', 'allowed_hosts')
 # Application definition
 
 INSTALLED_APPS = [
-    'pages',
-    'search',
-    '{{ project_name }}',
+    '{{ project_name }}.pages',
+    '{{ project_name }}.search',
 
     'wagtail.wagtailforms',
     'wagtail.wagtailredirects',
