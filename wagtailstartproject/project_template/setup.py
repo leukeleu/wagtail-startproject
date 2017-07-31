@@ -24,5 +24,5 @@ setup(
         'wagtail',
         'psycopg2',
     ],
-    test_suite='tests',
+    test_suite='runtests.runtests',
 )
