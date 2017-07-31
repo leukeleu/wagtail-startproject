@@ -14,6 +14,14 @@ DATABASES = {
     },
 }
 
+# Add middleware to add a meta tag with the response status code for Selenium
+MIDDLEWARE += [
+    'tests.middleware.PageStatusMiddleware'
+]
+
+# Fixture location
+FIXTURE_DIRS = ['tests/fixtures/']
+
 # Set the default cache to be a dummy cache
 CACHES = {
     'default': {
