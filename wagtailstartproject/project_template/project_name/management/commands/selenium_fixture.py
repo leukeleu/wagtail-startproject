@@ -1,8 +1,12 @@
 import os
 
-from django.core.management import BaseCommand, call_command
 from django.conf import settings
+from django.core.management import BaseCommand, call_command
 from django.db import transaction
+
+
+class FakeException(Exception):
+    pass
 
 
 class Command(BaseCommand):
@@ -12,14 +16,14 @@ class Command(BaseCommand):
         super(Command, self).__init__(*args, **kwargs)
 
     def handle(self, *args, **options):
-
+        """Perform data manipulation and datadump without affecting the database"""
         try:
             with transaction.atomic():
                 self.manipulate_data()
                 self.create_fixture()
-        except:
-
-        raise ValueError('Transaction needed to be rolled back, but everything went fine!')
+                raise FakeException('Trigger rollback')
+        except FakeException:
+            pass
 
     def manipulate_data(self):
         """Make changes to the data in the database before dumping

@@ -5,7 +5,7 @@ from os import path, rmdir
 from tempfile import mkdtemp
 
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException, WebDriverException
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support.ui import WebDriverWait
 
