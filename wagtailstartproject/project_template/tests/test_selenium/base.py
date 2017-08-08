@@ -63,8 +63,8 @@ class SeleniumTestCase(StaticLiveServerTestCase):
         """Setup a Chrome driver"""
 
         options = webdriver.ChromeOptions()
-        # options.add_argument('headless')
-        options.add_argument('window-size=1200x900')
+        options.add_argument('headless')
+        options.add_argument('window-size=1200,900')
         driver = webdriver.Chrome('./node_modules/.bin/chromedriver', chrome_options=options)
         return driver
 
