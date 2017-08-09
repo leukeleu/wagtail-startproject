@@ -1,9 +1,9 @@
 from wagtail.wagtailcore.models import Page
 
-from .base import SeleniumTestCase
+from .base import SeleniumDesktopTestCase
 
 
-class PagesTest(SeleniumTestCase):
+class PagesTest(SeleniumDesktopTestCase):
 
     def test_wagtail_pages(self):
         """Check if all Wagtail pages can be retrieved"""

@@ -62,17 +62,16 @@ class SeleniumTestCase(StaticLiveServerTestCase):
     def get_chrome_driver(cls):
         """Setup a Chrome driver"""
 
-        options = cls.get_driver_options(webdriver.ChromeOptions())
+        options = webdriver.ChromeOptions()
+        cls.get_driver_options()
         options.add_argument('headless')
         driver = webdriver.Chrome('./node_modules/.bin/chromedriver', chrome_options=options)
         return driver
 
     @classmethod
     def get_driver_options(cls, options):
-        """Use a desktop-sized browser by default"""
-
-        options.add_argument('window-size=1200,900')
-        return options
+        """To be overwritten in subclasses with specific options"""
+        pass
 
     def url(self, absolute_url):
         """Prepend the absolute url with the test server url"""
@@ -106,6 +105,15 @@ class SeleniumTestCase(StaticLiveServerTestCase):
                          msg="Unexpected status code for URL: {}".format(self.driver.current_url))
 
 
+class SeleniumDesktopTestCase(SeleniumTestCase):
+
+    """Selenium tests with a desktop-sized browser"""
+
+    @classmethod
+    def get_driver_options(cls, options):
+        options.add_argument('window-size=1200,900')
+
+
 class SeleniumMobileTestCase(SeleniumTestCase):
 
     """Selenium tests with a mobile-sized browser"""
@@ -113,4 +121,3 @@ class SeleniumMobileTestCase(SeleniumTestCase):
     @classmethod
     def get_driver_options(cls, options):
         options.add_experimental_option('mobileEmulation', {"deviceName": "iPhone 5"})
-        return options

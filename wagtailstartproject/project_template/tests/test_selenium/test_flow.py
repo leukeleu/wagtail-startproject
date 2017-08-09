@@ -1,7 +1,7 @@
-from .base import SeleniumTestCase, SeleniumMobileTestCase
+from .base import SeleniumDesktopTestCase, SeleniumMobileTestCase
 
 
-class FlowTest(SeleniumTestCase):
+class FlowTest(SeleniumDesktopTestCase):
 
     def test_homepage(self):
         """Check if the homepage opens"""
