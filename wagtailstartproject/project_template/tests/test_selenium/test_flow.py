@@ -1,4 +1,4 @@
-from .base import SeleniumTestCase
+from .base import SeleniumTestCase, SeleniumMobileTestCase
 
 
 class FlowTest(SeleniumTestCase):
@@ -9,3 +9,10 @@ class FlowTest(SeleniumTestCase):
         self.get('/')
         self.assert_status_code('200')
         # Now click somewhere or fill in a form
+
+
+class MobileFlowTest(SeleniumMobileTestCase, FlowTest):
+
+    """Run the tests on a mobile-like browser"""
+
+    pass
