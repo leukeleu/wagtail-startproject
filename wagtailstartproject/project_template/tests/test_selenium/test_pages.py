@@ -4,7 +4,6 @@ from .base import SeleniumTestCase
 
 
 class PagesTest(SeleniumTestCase):
-    fixtures = ['basic_site.json']
 
     def test_wagtail_pages(self):
         """Check if all Wagtail pages can be retrieved"""
