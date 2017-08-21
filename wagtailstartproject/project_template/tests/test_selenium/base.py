@@ -10,6 +10,7 @@ from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support.ui import WebDriverWait
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.core.urlresolvers import resolve, Resolver404
 from django.test.runner import RemoteTestResult
 
 
@@ -109,6 +110,26 @@ class SeleniumTestCase(StaticLiveServerTestCase):
         meta = self.driver.find_element_by_css_selector('meta[name="status_code"]')
         self.assertEqual(status_code, meta.get_attribute('content'),
                          msg="Unexpected status code for URL: {}".format(self.driver.current_url))
+
+    def assert_model_resolves_expected_view(self, obj, expected_view):
+        """Check if expected view is called for the given obj's absolute_url
+
+        In some cases an earlier defined url in the urls.py catches the request.
+        For class-based views give function returned by `as_view()` as expected_view.
+
+        """
+        url = obj.get_absolute_url()
+
+        try:
+            view, args, kwargs = resolve(url)
+        except Resolver404:
+            raise AssertionError('Unable to resolve the url for the object: "{url}"'.format(url=url))
+
+        self.assertEqual(
+            expected_view,
+            view,
+            msg="Url resolves to {view} instead of the expected {expected_view}.".format(view=view, expected_view=expected_view)
+        )
 
 
 class SeleniumDesktopTestCase(SeleniumTestCase):
