@@ -5,6 +5,7 @@ import sys
 import django
 
 from django.conf import settings
+from django.test.runner import default_test_processes
 from django.test.utils import get_runner
 
 
@@ -16,7 +17,7 @@ def runtests():
         tests = sys.argv[1:]
     else:
         tests = ['tests']
-    failures = test_runner().run_tests(tests)
+    failures = test_runner(parallel=default_test_processes()).run_tests(tests)
     sys.exit(bool(failures))
 
 

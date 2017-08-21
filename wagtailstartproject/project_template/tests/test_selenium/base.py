@@ -10,6 +10,7 @@ from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support.ui import WebDriverWait
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test.runner import RemoteTestResult
 
 
 class SeleniumTestCase(StaticLiveServerTestCase):
@@ -48,7 +49,12 @@ class SeleniumTestCase(StaticLiveServerTestCase):
         # Take screenshots of final state for failed tests
         result = self._resultForDoCleanups
         try:
-            failed = next(True for method, reason in chain(result.errors, result.failures) if method is self and reason)
+            if isinstance(result, RemoteTestResult):
+                # When running parallel tests
+                current_test_index = next(event[1] for event in reversed(result.events) if event[0] == 'startTest')
+                failed = next(True for event in result.events if event[0] in ['addError', 'addFailure'] and event[1] is current_test_index)
+            else:
+                failed = next(True for method, reason in chain(result.errors, result.failures) if method is self and reason)
         except StopIteration:
             failed = False
 
