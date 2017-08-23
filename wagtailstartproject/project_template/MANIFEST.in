@@ -1,0 +1,17 @@
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store
+global-exclude Thumbs.db
+global-exclude Desktop.ini
+global-exclude *.swp
+global-exclude *~
+global-exclude *.bak
+include .bumpversion.cfg
+include .editorconfig
+include .nvmrc
+include Makefile
+include manage.py
+include package.json
+include requirements-dev.txt
+include runtests.py
+graft tests
