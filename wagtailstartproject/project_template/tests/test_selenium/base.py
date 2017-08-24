@@ -42,6 +42,8 @@ class SeleniumTestCase(StaticLiveServerTestCase):
     def setUp(self):
         # Allow JS a bit of time to execute
         self.driver.implicitly_wait(3)
+        # Navigate to blank to prevent scroll position of previous test to affect this test
+        self.get('about:blank')
 
     def tearDown(self):
         # Reset wait to default
