@@ -7,6 +7,18 @@ sudo: false
 
 install:
   - pip install -r requirements-dev.txt
+  - if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
+      pip install -e .;
+    fi
 
 script:
   - make test
+  - if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
+      mkdir kwikstaart;
+      cd kwikstaart;
+      wagtail_startproject kwikstaart;
+      python -m venv ../temp-venv;
+      source ../temp-venv/bin/activate;
+      make install-pipeline;
+      make flaketest;
+    fi
