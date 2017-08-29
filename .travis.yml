@@ -14,8 +14,8 @@ install:
 script:
   - make test
   - if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
-      mkdir kwikstaart;
-      cd kwikstaart;
+      mkdir test_project;
+      cd test_project;
       wagtail_startproject kwikstaart;
       python -m venv ../temp-venv;
       source ../temp-venv/bin/activate;
