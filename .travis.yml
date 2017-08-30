@@ -19,6 +19,8 @@ script:
       wagtail_startproject kwikstaart &&
       python -m venv ../temp-venv &&
       source ../temp-venv/bin/activate &&
+      python --version &&
+      which python &&
       make install-pipeline &&
       make flaketest;
     fi
