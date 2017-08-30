@@ -1,0 +1,11 @@
+{{ project_name }}/local.ini
+
+# Common ignores, should already be in your global .gitignore
+.DS_Store
+*.py[cod]
+__pycache__/
+*.pot
+*.egg-info/
+.coverage
+htmlcov/
+node_modules/

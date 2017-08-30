@@ -6,14 +6,14 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>
-            {% templatetag openblock %} block title {% templatetag closeblock %}
-                {% templatetag openblock %} if self.seo_title {% templatetag closeblock %}{% templatetag openvariable %} self.seo_title {% templatetag closevariable %}{% templatetag openblock %} else {% templatetag closeblock %}{% templatetag openvariable %} self.title {% templatetag closevariable %}{% templatetag openblock %} endif  {% templatetag closeblock %}
-            {% templatetag openblock %} endblock {% templatetag closeblock %}
-            {% templatetag openblock %} block title_suffix {% templatetag closeblock %}
-                {% templatetag openblock %} with self.get_site.site_name as site_name {% templatetag closeblock %}
-                    {% templatetag openblock %} if site_name %}- {% templatetag openvariable %} site_name {% templatetag closevariable %}{% templatetag openblock %} endif {% templatetag closeblock %}
-                {% templatetag openblock %} endwith {% templatetag closeblock %}
-            {% templatetag openblock %} endblock {% templatetag closeblock %}
+            {% templatetag openblock %} block title %}
+                {% templatetag openblock %} if self.seo_title %}{% templatetag openvariable %} self.seo_title {% templatetag closevariable %}{% templatetag openblock %} else %}{% templatetag openvariable %} self.title {% templatetag closevariable %}{% templatetag openblock %} endif %}
+            {% templatetag openblock %} endblock %}
+            {% templatetag openblock %} block title_suffix %}
+                {% templatetag openblock %} with self.get_site.site_name as site_name %}
+                    {% templatetag openblock %} if site_name %}- {% templatetag openvariable %} site_name {% templatetag closevariable %}{% templatetag openblock %} endif %}
+                {% templatetag openblock %} endwith %}
+            {% templatetag openblock %} endblock %}
         </title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">

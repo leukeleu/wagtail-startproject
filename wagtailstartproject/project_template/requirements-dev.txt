@@ -2,6 +2,9 @@ bumpversion
 check-manifest
 coverage
 flake8
+flake8-bugbear
 flake8-isort
 pep8-naming
 readme_renderer
+selenium
+tblib
