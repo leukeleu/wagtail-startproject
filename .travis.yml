@@ -7,12 +7,7 @@ sudo: false
 
 install:
   - pip install -r requirements-dev.txt
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
-      python -m venv ../temp &&
-      source ../temp/bin/activate &&
-      which pip &&
-      pip install -e .;
-    fi
+  - pip install -e .
 
 script:
   - make test
@@ -20,7 +15,8 @@ script:
       mkdir test_project &&
       cd test_project &&
       wagtail_startproject kwikstaart &&
-      python -m venv ../temp-venv &&
+      pip install virtualenv &&
+      virtualenv ../temp-venv &&
       source ../temp-venv/bin/activate &&
       which pip &&
       python -c "import sys; print(sys.version_info); print(sys.version_info >= (3, 5, 0))" &&
