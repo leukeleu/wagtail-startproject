@@ -1,7 +1,10 @@
 language: python
-python:
-  - "2.7"
-  - "3.6"
+
+matrix:
+  include:
+    - python: "2.7"
+      env: LEGACY=--legacy
+    - pyhon: "3.6"
 
 sudo: false
 
@@ -11,15 +14,11 @@ install:
 
 script:
   - make test
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
-      mkdir test_project &&
-      cd test_project &&
-      wagtail_startproject kwikstaart &&
-      pip install virtualenv &&
-      virtualenv ../temp-venv &&
-      source ../temp-venv/bin/activate &&
-      which pip &&
-      python -c "import sys; print(sys.version_info); print(sys.version_info >= (3, 5, 0))" &&
-      make install-pipeline &&
-      make flaketest;
-    fi
+  - mkdir test_project
+  - cd test_project
+  - wagtail_startproject $LEGACY kwikstaart
+  - pip install virtualenv
+  - virtualenv ../temp-venv
+  - source ../temp-venv/bin/activate
+  - make install-pipeline
+  - make flaketest
