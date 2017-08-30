@@ -1,0 +1,5 @@
+check-manifest
+flake8
+flake8-isort
+pep8-naming
+readme_renderer

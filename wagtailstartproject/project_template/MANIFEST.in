@@ -8,8 +8,10 @@ global-exclude *~
 global-exclude *.bak
 include .bumpversion.cfg
 include .editorconfig
-include LICENSE
+include .nvmrc
 include Makefile
+include manage.py
+include package.json
 include requirements-dev.txt
-recursive-include wagtailstartproject/legacy_project_template *
-recursive-include wagtailstartproject/project_template *
+include runtests.py
+graft tests

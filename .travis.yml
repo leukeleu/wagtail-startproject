@@ -1,0 +1,24 @@
+language: python
+
+matrix:
+  include:
+    - python: "2.7"
+      env: LEGACY=--legacy
+    - python: "3.6"
+
+sudo: false
+
+install:
+  - pip install -r requirements-dev.txt
+  - pip install -e .
+
+script:
+  - make test
+  - mkdir test_project
+  - cd test_project
+  - wagtail_startproject $LEGACY kwikstaart
+  - pip install virtualenv
+  - virtualenv ../temp-venv
+  - source ../temp-venv/bin/activate
+  - make install-pipeline
+  - make flaketest

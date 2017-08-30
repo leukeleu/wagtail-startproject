@@ -7,7 +7,7 @@ setup(
     version='0.1.4',
     description='This app contains a custom project template and a custom wagtail start command to allow creating customized wagtail setups',
     long_description=io.open('README.rst', encoding='utf-8').read(),
-    keywords=['wagtail', 'startproject',],
+    keywords=['wagtail', 'startproject'],
     author='Ramon de Jezus (Leukeleu)',
     author_email='rdejezus@leukeleu.nl',
     maintainer='Leukeleu',
@@ -26,8 +26,9 @@ setup(
     ],
     include_package_data=True,
     zip_safe=False,
-    entry_points="""
-            [console_scripts]
-            wagtail_startproject=wagtailstartproject.wagtailstartproject:main
-    """
+    entry_points={
+        'console_scripts': [
+            'wagtail_startproject = wagtailstartproject.wagtailstartproject:main',
+        ],
+    },
 )
