@@ -15,7 +15,7 @@ DATABASES = {
 }
 
 # Add middleware to add a meta tag with the response status code for Selenium
-MIDDLEWARE += [
+MIDDLEWARE += [  # noqa: F405
     'tests.middleware.PageStatusMiddleware'
 ]
 

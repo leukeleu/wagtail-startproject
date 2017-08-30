@@ -10,7 +10,7 @@ from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support.ui import WebDriverWait
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.core.urlresolvers import resolve, Resolver404
+from django.core.urlresolvers import Resolver404, resolve
 from django.test.runner import RemoteTestResult
 
 
