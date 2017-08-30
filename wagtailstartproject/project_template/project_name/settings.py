@@ -71,6 +71,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -145,8 +146,14 @@ STATICFILES_DIRS = [
     os.path.join(PACKAGE_DIR, 'static'),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+if DEBUG:
+    # STATIC_ROOT defaults to BASE_DIR/var/staticfiles in debug mode
+    STATIC_ROOT = config.getliteral('app', 'static_root', fallback=os.path.join(BASE_DIR, 'var', 'staticfiles'))
+else:
+    # Require STATIC_ROOT to be configured
+    STATIC_ROOT = config.getliteral('app', 'static_root')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

@@ -23,6 +23,7 @@ setup(
         'Django',
         'wagtail',
         'psycopg2',
+        'whitenoise',
     ],
     test_suite='runtests.runtests',
 )
