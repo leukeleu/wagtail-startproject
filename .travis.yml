@@ -8,6 +8,9 @@ sudo: false
 install:
   - pip install -r requirements-dev.txt
   - if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
+      python -m venv ../temp &&
+      source ../temp/bin/activate &&
+      which pip &&
       pip install -e .;
     fi
 
