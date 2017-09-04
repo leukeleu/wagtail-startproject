@@ -1,7 +1,7 @@
 import unittest
 
 from itertools import chain
-from os import path, rmdir
+from os import path, rmdir, environ
 from tempfile import mkdtemp
 
 from selenium import webdriver
@@ -15,21 +15,28 @@ from django.test.runner import RemoteTestResult
 
 
 class SeleniumTestCase(StaticLiveServerTestCase):
+
+    """
+    Tests with a Selenium webdriver to run tests in a browser.
+
+    Defaults to the Chrome browser.
+
+    """
+
     fixtures = ['basic_site.json']
 
     @classmethod
     def setUpClass(cls):
+        """Start the webrdriver and create a temp dir to store screenshots of failed tests"""
+
         super(SeleniumTestCase, cls).setUpClass()
-        # Every test needs a Chrome driver.
-        try:
-            cls.driver = cls.get_chrome_driver()
-        except WebDriverException:
-            raise unittest.SkipTest('Not able to start Chrome driver.')
-        # Create temp dir to store screenshots of failed tests
+        cls.driver = cls.get_driver()
         cls.screenshot_dir = mkdtemp()
 
     @classmethod
     def tearDownClass(cls):
+        """Quit the browser and print screenshot dir location if it contains screenshots"""
+
         cls.driver.quit()
         try:
             rmdir(cls.screenshot_dir)
@@ -68,17 +75,20 @@ class SeleniumTestCase(StaticLiveServerTestCase):
         super(SeleniumTestCase, self).tearDown()
 
     @classmethod
-    def get_chrome_driver(cls):
-        """Setup a Chrome driver"""
+    def get_driver(cls):
+        """Setup a Chrome webdriver"""
 
         options = webdriver.ChromeOptions()
-        cls.get_driver_options()
         options.add_argument('headless')
-        driver = webdriver.Chrome('./node_modules/.bin/chromedriver', chrome_options=options)
+        cls.set_driver_options(options)
+        try:
+            driver = webdriver.Chrome('./node_modules/.bin/chromedriver', chrome_options=options)
+        except WebDriverException:
+            raise unittest.SkipTest('Not able to start Chrome driver.')
         return driver
 
     @classmethod
-    def get_driver_options(cls, options):
+    def set_driver_options(cls, options):
         """To be overwritten in subclasses with specific options"""
         pass
 
@@ -99,7 +109,7 @@ class SeleniumTestCase(StaticLiveServerTestCase):
         return self.driver.get(self.url(absolute_url))
 
     def wait_for_staleness(self, test_element, timeout=3):
-        """Wait untill the given test element is gone"""
+        """Wait until the given test element is gone"""
 
         WebDriverWait(self.driver, timeout).until(staleness_of(test_element))
 
@@ -139,7 +149,7 @@ class SeleniumDesktopTestCase(SeleniumTestCase):
     """Selenium tests with a desktop-sized browser"""
 
     @classmethod
-    def get_driver_options(cls, options):
+    def set_driver_options(cls, options):
         options.add_argument('window-size=1200,900')
 
 
@@ -148,5 +158,26 @@ class SeleniumMobileTestCase(SeleniumTestCase):
     """Selenium tests with a mobile-sized browser"""
 
     @classmethod
-    def get_driver_options(cls, options):
+    def set_driver_options(cls, options):
         options.add_experimental_option('mobileEmulation', {"deviceName": "iPhone 5"})
+
+
+class FirefoxDriverMixin(object):
+
+    @classmethod
+    def get_driver(cls):
+        """Setup a Firefox webdriver"""
+
+        environ['MOZ_HEADLESS'] = "1"
+        options = webdriver.firefox.options.Options()
+        cls.set_driver_options(options)
+        try:
+            driver = webdriver.Firefox(executable_path='./node_modules/.bin/geckodriver', firefox_options=options)
+        except WebDriverException:
+            raise unittest.SkipTest('Not able to start Firefox driver.')
+        driver.set_window_size(1200, 900)
+        return driver
+
+    @classmethod
+    def set_driver_options(cls, options):
+        pass

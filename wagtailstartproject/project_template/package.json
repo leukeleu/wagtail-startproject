@@ -11,5 +11,6 @@
   "homepage": "https://bitbucket.org/[organisation]/{{ project_name }}",
   "devDependencies": {
     "chromedriver": "^2.31.0",
+    "geckodriver": "^1.8.1"
   }
 }
