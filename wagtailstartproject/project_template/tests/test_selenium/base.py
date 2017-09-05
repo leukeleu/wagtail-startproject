@@ -1,7 +1,7 @@
 import unittest
 
 from itertools import chain
-from os import path, rmdir, environ
+from os import environ, path, rmdir
 from tempfile import mkdtemp
 
 from selenium import webdriver
