@@ -6,6 +6,7 @@ import sys
 import django
 
 from django.conf import settings
+from django.test.runner import default_test_processes
 from django.test.utils import get_runner
 
 
@@ -13,11 +14,16 @@ def runtests(args):
     os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.test_settings'
     django.setup()
 
+    if args.parallel:
+        parallel = default_test_processes()
+    else:
+        parallel = 0
+
     if args.sql:
         settings.TEST_RUNNER = 'tests.runner.KeepDBRunner'
 
     test_runner = get_runner(settings)
-    failures = test_runner(parallel=args.parallel).run_tests(args.tests)
+    failures = test_runner(parallel=parallel).run_tests(args.tests)
     sys.exit(bool(failures))
 
 
