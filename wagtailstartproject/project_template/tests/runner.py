@@ -1,14 +1,9 @@
 import os
 import subprocess
 
+from django.conf import settings
 from django.core.management import call_command
 from django.db import connections
-from django.conf import settings
-
-try:
-    import tblib.pickling_support
-except ImportError:
-    tblib = None
 from django.test.runner import DiscoverRunner, get_unique_databases_and_mirrors
 
 
@@ -18,7 +13,7 @@ class KeepDBRunner(DiscoverRunner):
 
         old_names = []
 
-        for signature, (db_name, aliases) in test_databases.items():
+        for _, (db_name, aliases) in test_databases.items():
             first_alias = None
             for alias in aliases:
                 connection = connections[alias]
@@ -31,7 +26,7 @@ class KeepDBRunner(DiscoverRunner):
                     connection_creation = connection.creation
                     test_database_name = connection_creation._get_test_db_name()
 
-                    #create the database
+                    # Create the database
                     connection_creation._create_test_db(
                         verbosity=self.verbosity,
                         autoclobber=not self.interactive,
@@ -42,18 +37,18 @@ class KeepDBRunner(DiscoverRunner):
                     connection_creation.connection.settings_dict["NAME"] = test_database_name
 
                     # Create the tables using to the SQL dump
-                    FNULL = open(os.devnull, 'w')
+                    fnull = open(os.devnull, 'w')
                     # using psql because we do a full restore anyways
                     # https://www.postgresql.org/message-id/NEBBLAAHGLEEPCGOBHDGAECGHEAA.nickf%40ontko.com
-                    subprocess.call([
+                    subprocess.call(
+                        [
                             'psql',
-                            '{dbname}'.format(dbname=settings.DATABASES.get('default').get('TEST').get('NAME')),
-                            '--file={dir}{sqldump_path}'.format(
-                                dir=settings.FIXTURE_DIRS[0],
-                                sqldump_path='basic_site.sql',
+                            str(settings.DATABASES.get('default').get('TEST').get('NAME')),
+                            '--file={sqldump_path}'.format(
+                                sqldump_path=os.path.join(settings.FIXTURE_DIRS[0], 'basic_site.sql'),
                             )
                         ],
-                        stdout=FNULL
+                        stdout=fnull
                     )
 
                     # Only run the migrations that are newer than what the original database knows about

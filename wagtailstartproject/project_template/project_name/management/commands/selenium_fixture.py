@@ -58,7 +58,8 @@ class Command(BaseCommand):
         )
 
         # TODO: find a way to have it anonymized
-        subprocess.call([
+        subprocess.call(
+            [
                 'pg_dump',
                 '--no-owner',
                 '--no-privileges',

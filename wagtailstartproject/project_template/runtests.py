@@ -1,12 +1,11 @@
 #!/usr/bin/env python
+import argparse
 import os
 import sys
-import argparse
 
 import django
 
 from django.conf import settings
-from django.test.runner import default_test_processes
 from django.test.utils import get_runner
 
 
