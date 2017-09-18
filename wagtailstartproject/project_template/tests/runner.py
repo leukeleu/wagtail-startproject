@@ -9,6 +9,11 @@ from django.test.runner import DiscoverRunner, get_unique_databases_and_mirrors
 
 class KeepDBRunner(DiscoverRunner):
     def setup_databases(self, **kwargs):
+        """
+        Mostly the same as the parent logic except we need to populate the database with the content of the SQL file
+        before running the migrations.
+
+        """
         test_databases, mirrored_aliases = get_unique_databases_and_mirrors()
 
         old_names = []
@@ -22,6 +27,8 @@ class KeepDBRunner(DiscoverRunner):
                 # Actually create the database for the first connection
                 if first_alias is None:
                     first_alias = alias
+
+                    # --- From here, copy and change BaseDatabaseCreation.create_test_db
 
                     connection_creation = connection.creation
                     test_database_name = connection_creation._get_test_db_name()
@@ -59,6 +66,8 @@ class KeepDBRunner(DiscoverRunner):
                         database=connection_creation.connection.alias,
                         run_syncdb=True,
                     )
+
+                    # --- Til here. Then again, same as DiscoverRunner.setup_databases
 
                     if self.parallel > 1:
                         for index in range(self.parallel):
