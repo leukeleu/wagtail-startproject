@@ -17,7 +17,7 @@ def runtests(args):
     if args.parallel:
         parallel = default_test_processes()
     else:
-        parallel = 0
+        parallel = 1  # or 0 would have the same outcome; no parallel testing
 
     if args.sql:
         settings.TEST_RUNNER = 'tests.runner.KeepDBRunner'
