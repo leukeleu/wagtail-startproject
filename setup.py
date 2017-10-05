@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='wagtailstartproject',
-    version='0.1.4',
+    version='0.1.5',
     description='This app contains a custom project template and a custom wagtail start command to allow creating customized wagtail setups',
     long_description=io.open('README.rst', encoding='utf-8').read(),
     keywords=['wagtail', 'startproject'],
