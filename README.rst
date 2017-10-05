@@ -27,7 +27,12 @@ Release
 -------
 
     pip install -r requirements-dev.txt
+
     bumpversion release --commit --tag
+
     rm -rf dist
+
     python setup.py sdist bdist_wheel
+
     twine upload dist/*
+
