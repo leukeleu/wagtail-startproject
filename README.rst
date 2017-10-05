@@ -22,3 +22,12 @@ Then, to start your project using the project templates structure,
 navigate to the project root and enter the following command::
 
     wagtail_startproject <project-name>
+
+Release
+-------
+
+    pip install -r requirements-dev.txt
+    bumpversion release --commit --tag
+    rm -rf dist
+    python setup.py sdist bdist_wheel
+    twine upload dist/*
