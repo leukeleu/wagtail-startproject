@@ -43,6 +43,7 @@ ALLOWED_HOSTS = config.getliteral('app', 'allowed_hosts')
 # Application definition
 
 INSTALLED_APPS = [
+    '{{ project_name }}',
     '{{ project_name }}.pages',
     '{{ project_name }}.search',
 
