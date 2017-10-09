@@ -1,10 +1,14 @@
 {
-  "name": "",
+  "name": "{{ project_name }}",
   "version": "0.0.1",
-  "description": "",
+  "description": "{{ project_name }}",
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:[organisation]/{{ project_name }}.git"
+  },
   "author": "",
   "license": "UNLICENSED",
-  "dependencies": {},
+  "homepage": "https://bitbucket.org/[organisation]/{{ project_name }}",
   "devDependencies": {
     "chromedriver": "^2.31.0",
   }
