@@ -25,8 +25,8 @@ BASE_DIR = os.path.dirname(PACKAGE_DIR)
 
 config = ConfigParser(converters={'literal': json.loads}, interpolation=None)
 config.read([
-    os.path.join(PACKAGE_DIR, 'defaults.ini'),
-    os.environ.get('APP_SETTINGS', os.path.join(PACKAGE_DIR, 'local.ini'))
+    os.environ.get('APP_SETTINGS', os.path.join(PACKAGE_DIR, 'local.ini')),
+    os.path.join(PACKAGE_DIR, 'local.ini'),
 ])
 
 # Quick-start development settings - unsuitable for production
@@ -36,7 +36,7 @@ config.read([
 SECRET_KEY = config.getliteral('app', 'secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config.getboolean('app', 'debug')
+DEBUG = config.getboolean('app', 'debug', fallback=False)
 
 ALLOWED_HOSTS = config.getliteral('app', 'allowed_hosts')
 
@@ -112,7 +112,7 @@ WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': config.getliteral('app', 'db_host'),
+        'HOST': config.getliteral('app', 'db_host', fallback=''),
         'NAME': config.getliteral('app', 'db_name'),
         'USER': config.getliteral('app', 'db_user'),
         'PASSWORD': config.getliteral('app', 'db_password'),
