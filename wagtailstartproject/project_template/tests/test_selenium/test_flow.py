@@ -1,4 +1,4 @@
-from .base import SeleniumDesktopTestCase, SeleniumMobileTestCase
+from .base import FirefoxDriverMixin, SeleniumDesktopTestCase, SeleniumMobileTestCase
 
 
 class FlowTest(SeleniumDesktopTestCase):
@@ -14,5 +14,12 @@ class FlowTest(SeleniumDesktopTestCase):
 class MobileFlowTest(SeleniumMobileTestCase, FlowTest):
 
     """Run the tests on a mobile-like browser"""
+
+    pass
+
+
+class FirefoxFlowTest(FirefoxDriverMixin, FlowTest):
+
+    """Run the tests in the Firefox browser"""
 
     pass
