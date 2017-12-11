@@ -12,5 +12,4 @@ include LICENSE
 include Makefile
 include requirements-dev.txt
 include README.rst
-recursive-include wagtailstartproject/legacy_project_template *
 recursive-include wagtailstartproject/project_template *
