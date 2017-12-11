@@ -3,6 +3,7 @@ import unittest
 from itertools import chain
 from os import environ, path, rmdir
 from tempfile import mkdtemp
+from time import sleep
 
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
@@ -152,6 +153,10 @@ class SeleniumDesktopTestCase(SeleniumTestCase):
     def set_driver_options(cls, options):
         options.add_argument('window-size=1200,900')
 
+    def wait_for_form_submit(self):
+        """Use after submitting a form"""
+        pass
+
 
 class SeleniumMobileTestCase(SeleniumTestCase):
 
@@ -181,3 +186,7 @@ class FirefoxDriverMixin(object):
     @classmethod
     def set_driver_options(cls, options):
         pass
+
+    def wait_for_form_submit(self):
+        """Use after submitting a form"""
+        sleep(2)
