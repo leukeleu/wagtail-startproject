@@ -26,13 +26,10 @@ navigate to the project root and enter the following command::
 Release
 -------
 
+To create and upload a release to PyPI::
+
     pip install -r requirements-dev.txt
-
     bumpversion release --commit --tag
-
     rm -rf dist
-
     python setup.py sdist bdist_wheel
-
     twine upload dist/*
-
