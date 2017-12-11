@@ -4,15 +4,16 @@ test: coveragetest flaketest checkmanifest checksetup
 
 unittests:
 	# Run unit tests with coverage
-	coverage run --branch --source={{ project_name }},pages,search,tests setup.py test
+	coverage run setup.py test
 
 coveragetest: unittests
 	# Generate coverage report and require minimum coverage
-	coverage report --show-missing
+	coverage report
 
 coverage: unittests
 	# Generate test coverage html report
 	coverage html
+	@echo "Coverage report is located at ./var/htmlcov/index.html"
 
 flaketest:
 	# Check syntax and style
