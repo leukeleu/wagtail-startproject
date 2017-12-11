@@ -23,6 +23,8 @@ PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(PACKAGE_DIR)
 
+# Get config files. Get file given by env variable APP_SETTINGS and local.ini.
+# The settings in local.ini overwrite any set in the APP_SETTINGS file.
 config = ConfigParser(converters={'literal': json.loads}, interpolation=None)
 config.read([
     os.environ.get('APP_SETTINGS', os.path.join(PACKAGE_DIR, 'local.ini')),
