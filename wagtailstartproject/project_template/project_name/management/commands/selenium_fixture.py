@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from django.conf import settings
 from django.core.management import BaseCommand, call_command
@@ -45,12 +46,24 @@ class Command(BaseCommand):
             'wagtailcore.groupcollectionpermission',
         ]
 
-        path = os.path.join(settings.BASE_DIR, 'tests/fixtures/basic_site.json')
+        json_path = os.path.join(settings.BASE_DIR, 'tests/fixtures/basic_site.json')
+        sql_path = os.path.join(settings.BASE_DIR, 'tests/fixtures/basic_site.sql')
 
         call_command(
             'dumpdata',
             exclude=excluded,
             natural_foreign=True,
             indent=2,
-            output=path
+            output=json_path
+        )
+
+        # TODO: find a way to have it anonymized
+        subprocess.call(
+            [
+                'pg_dump',
+                '--no-owner',
+                '--no-privileges',
+                '--file={file}'.format(file=sql_path),
+                '{dbname}'.format(dbname=settings.DATABASES.get('default').get('NAME')),
+            ]
         )
