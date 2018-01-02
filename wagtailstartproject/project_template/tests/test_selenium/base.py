@@ -80,12 +80,13 @@ class SeleniumTestCase(StaticLiveServerTestCase):
         """Setup a Chrome webdriver"""
 
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')
+        options.set_headless()
         cls.set_driver_options(options)
-        try:
+        if environ.get('CI') is not None:
+            # For Bitbucket pipelines
+            driver = webdriver.Remote('http://localhost:4444/wd/hub', desired_capabilities=options.to_capabilities())
+        else:
             driver = webdriver.Chrome('./node_modules/.bin/chromedriver', chrome_options=options)
-        except WebDriverException:
-            raise unittest.SkipTest('Not able to start Chrome driver.')
         return driver
 
     @classmethod
@@ -151,6 +152,7 @@ class SeleniumDesktopTestCase(SeleniumTestCase):
 
     @classmethod
     def set_driver_options(cls, options):
+        """Set window width and height to common desktop size"""
         options.add_argument('window-size=1200,900')
 
     def wait_for_form_submit(self):
@@ -164,22 +166,31 @@ class SeleniumMobileTestCase(SeleniumTestCase):
 
     @classmethod
     def set_driver_options(cls, options):
-        options.add_experimental_option('mobileEmulation', {"deviceName": "iPhone 5"})
+        """Set window width and height to common smartphone size"""
+        options.add_argument('window-size=320,568')
+        #options.add_experimental_option('mobileEmulation', {"deviceName": "iPhone 5"})
 
 
 class FirefoxDriverMixin(object):
+
+    """Use a Firefox browser to run the tests.
+
+    Currently sets window size to 1200x900, combining with SeleniumMobileTestCase does not work.
+
+    """
 
     @classmethod
     def get_driver(cls):
         """Setup a Firefox webdriver"""
 
-        environ['MOZ_HEADLESS'] = "1"
         options = webdriver.firefox.options.Options()
+        options.set_headless()
         cls.set_driver_options(options)
-        try:
+        if environ.get('CI') is not None:
+            driver = webdriver.Remote('http://localhost:4444/wd/hub', desired_capabilities=options.to_capabilities())
+        else:
             driver = webdriver.Firefox(executable_path='./node_modules/.bin/geckodriver', firefox_options=options)
-        except WebDriverException:
-            raise unittest.SkipTest('Not able to start Firefox driver.')
+        # Set window size for Firefox to common desktop size.
         driver.set_window_size(1200, 900)
         return driver
 
