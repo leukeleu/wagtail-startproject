@@ -8,6 +8,8 @@ matrix:
 
 sudo: false
 
+cache: pip
+
 install:
   - pip install -r requirements-dev.txt
   - pip install -e .
