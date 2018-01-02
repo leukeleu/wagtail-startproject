@@ -4,7 +4,7 @@ test: coveragetest flaketest checkmanifest checksetup
 
 unittests:
 	# Run unit tests with coverage
-	coverage run setup.py test
+	coverage run runtests.py tests.test_{{ project_name }}
 
 coveragetest: unittests
 	# Generate coverage report and require minimum coverage
