@@ -1,12 +1,9 @@
-import unittest
-
 from itertools import chain
 from os import environ, path, rmdir
 from tempfile import mkdtemp
 from time import sleep
 
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -168,7 +165,7 @@ class SeleniumMobileTestCase(SeleniumTestCase):
     def set_driver_options(cls, options):
         """Set window width and height to common smartphone size"""
         options.add_argument('window-size=320,568')
-        #options.add_experimental_option('mobileEmulation', {"deviceName": "iPhone 5"})
+        # options.add_experimental_option('mobileEmulation', {"deviceName": "iPhone 5"})
 
 
 class FirefoxDriverMixin(object):
