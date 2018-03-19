@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argparse
 import os
 import sys
 
@@ -12,14 +13,37 @@ from django.test.utils import get_runner
 def runtests():
     os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.test_settings'
     django.setup()
+
+    if args.headful:
+        settings.HEADLESS = False
+
     test_runner = get_runner(settings)
-    if sys.argv[0] != 'setup.py' and len(sys.argv) > 1:
-        tests = sys.argv[1:]
-    else:
-        tests = ['tests']
-    failures = test_runner(parallel=default_test_processes()).run_tests(tests)
+    failures = test_runner(parallel=args.parallel).run_tests(args.tests)
     sys.exit(bool(failures))
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Run tests')
+    parser.add_argument(
+        dest='tests',
+        metavar='testcase',
+        nargs='*',
+        default=['tests'],
+        help='an optional list of test cases to run'
+    )
+    parser.add_argument(
+        '--parallel',
+        type=int,
+        nargs='?',
+        const=default_test_processes(),  # arg is given without value
+        default=1,  # arg is not given
+        help='do run multiple tests in parallel (how many if specified, else equal to number of processors)'
+    )
+    parser.add_argument(
+        '--headful',
+        action='store_true',
+        help='do not run headless (checkout tests running onscreen)'
+    )
+
+    args = parser.parse_args()
     runtests()
