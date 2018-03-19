@@ -176,8 +176,8 @@ class FirefoxDriverMixin(object):
 
         environ['MOZ_HEADLESS'] = "1"
         options = webdriver.firefox.options.Options()
-        cls.set_driver_options(options)
         options.set_headless(headless=getattr(settings, 'HEADLESS', True))
+        cls.set_driver_options(options)
         try:
             driver = webdriver.Firefox(executable_path='./node_modules/.bin/geckodriver', firefox_options=options)
         except WebDriverException:
