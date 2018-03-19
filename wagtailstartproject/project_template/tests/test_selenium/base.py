@@ -10,6 +10,7 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support.ui import WebDriverWait
 
+from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.urlresolvers import Resolver404, resolve
 from django.test.runner import RemoteTestResult
@@ -80,7 +81,7 @@ class SeleniumTestCase(StaticLiveServerTestCase):
         """Setup a Chrome webdriver"""
 
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')
+        options.set_headless(headless=getattr(settings, 'HEADLESS', True))
         cls.set_driver_options(options)
         try:
             driver = webdriver.Chrome('./node_modules/.bin/chromedriver', chrome_options=options)
@@ -176,6 +177,7 @@ class FirefoxDriverMixin(object):
         environ['MOZ_HEADLESS'] = "1"
         options = webdriver.firefox.options.Options()
         cls.set_driver_options(options)
+        options.set_headless(headless=getattr(settings, 'HEADLESS', True))
         try:
             driver = webdriver.Firefox(executable_path='./node_modules/.bin/geckodriver', firefox_options=options)
         except WebDriverException:
