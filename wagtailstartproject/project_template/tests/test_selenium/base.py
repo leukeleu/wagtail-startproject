@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support.ui import WebDriverWait
 
+from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.urlresolvers import Resolver404, resolve
 from django.test.runner import RemoteTestResult
@@ -77,7 +78,7 @@ class SeleniumTestCase(StaticLiveServerTestCase):
         """Setup a Chrome webdriver"""
 
         options = webdriver.ChromeOptions()
-        options.set_headless()
+        options.set_headless(headless=getattr(settings, 'HEADLESS', True))
         cls.set_driver_options(options)
         if environ.get('CI') is not None:
             # For Bitbucket pipelines
@@ -181,7 +182,7 @@ class FirefoxDriverMixin(object):
         """Setup a Firefox webdriver"""
 
         options = webdriver.firefox.options.Options()
-        options.set_headless()
+        options.set_headless(headless=getattr(settings, 'HEADLESS', True))
         cls.set_driver_options(options)
         if environ.get('CI') is not None:
             driver = webdriver.Remote('http://localhost:4444/wd/hub', desired_capabilities=options.to_capabilities())
