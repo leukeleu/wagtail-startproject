@@ -37,7 +37,7 @@ if __name__ == '__main__':
         nargs='?',
         const=default_test_processes(),  # arg is given without value
         default=1,  # arg is not given
-        help='do run multiple tests in parallel (how many if specified, else as many as possible)'
+        help='do run multiple tests in parallel (how many if specified, else equal to number of processors)'
     )
     parser.add_argument(
         '--headful',
