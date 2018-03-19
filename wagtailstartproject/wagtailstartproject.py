@@ -30,7 +30,7 @@ def check_project_name(parser, project_name):
                      "name. Please try another name.".format(project_name=project_name))
 
 
-def create_project(project_name, legacy=False):
+def create_project(project_name):
     """Create the project using the Django startproject command"""
 
     print("Creating a Wagtail project called {project_name}".format(project_name=project_name))
@@ -38,21 +38,18 @@ def create_project(project_name, legacy=False):
     import wagtailstartproject
     wagtailstartproject_path = os.path.dirname(wagtailstartproject.__file__)
 
-    if legacy:
-        template_dir = 'legacy_project_template'
-    else:
-        template_dir = 'project_template'
-
-    template_path = os.path.join(wagtailstartproject_path, template_dir)
+    template_path = os.path.join(wagtailstartproject_path, 'project_template')
 
     # Call django-admin startproject
     # https://docs.djangoproject.com/en/2.0/ref/django-admin/#startproject
-    utility_args = ['django-admin.py',
-                    'startproject',
-                    '--template=' + template_path,
-                    '--extension=py,ini,html,rst,json,cfg',
-                    '--name=Makefile',
-                    project_name]
+    utility_args = [
+        'django-admin.py',
+        'startproject',
+        '--template=' + template_path,
+        '--extension=py,ini,html,rst,json,cfg',
+        '--name=Makefile',
+        project_name
+    ]
 
     # always put the project template inside the current directory:
     utility_args.append('.')
@@ -66,13 +63,11 @@ def create_project(project_name, legacy=False):
 def main():
     parser = ArgumentParser(description="Setup a project for a new wagtail based website inside the current directory")
     parser.add_argument('project_name', help="name of the project to create")
-    parser.add_argument('--legacy', action="store_true",
-                        help="flag to indicate this project will use legacy deployment")
     args = parser.parse_args()
 
     check_project_name(parser, args.project_name)
 
-    create_project(args.project_name, args.legacy)
+    create_project(args.project_name)
 
 
 if __name__ == "__main__":

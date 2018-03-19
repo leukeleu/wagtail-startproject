@@ -1,10 +1,6 @@
 language: python
 
-matrix:
-  include:
-    - python: "2.7"
-      env: LEGACY=--legacy
-    - python: "3.6"
+python: "3.6"
 
 sudo: false
 
@@ -18,7 +14,7 @@ script:
   - make test
   - mkdir test_project
   - cd test_project
-  - wagtail_startproject $LEGACY kwikstaart
+  - wagtail_startproject kwikstaart
   - pip install virtualenv
   - virtualenv ../temp-venv
   - source ../temp-venv/bin/activate
