@@ -34,3 +34,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 # Disable the automatic indexing (sigals) of your search backend
 # In WAGTAILSEARCH_BACKENDS set AUTO_UPDATE for each backend to False
+
+# Run tests headless by default
+HEADLESS = True
