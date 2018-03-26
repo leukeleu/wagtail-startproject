@@ -17,8 +17,12 @@ class PageStatusMiddleware(MiddlewareMixin):
         if 'html' in response['Content-Type'].lower():
             response.content = response.content.replace(
                 b'</head>',
-                bytes('<meta name="status_code" content="{status_code}" /></head>'.format(status_code=response.status_code), encoding='ascii'),
+                bytes(
+                    '<meta name="status_code" content="{status_code}" /></head>'.format(status_code=response.status_code),
+                    encoding='ascii'
+                ),
                 1
             )
+            response['Content-Length'] = str(len(response.content))
 
         return response
