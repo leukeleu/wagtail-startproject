@@ -41,11 +41,13 @@ def create_project(project_name):
     template_path = os.path.join(wagtailstartproject_path, 'project_template')
 
     # Call django-admin startproject
+    # https://docs.djangoproject.com/en/2.0/ref/django-admin/#startproject
     utility_args = [
         'django-admin.py',
         'startproject',
         '--template=' + template_path,
         '--extension=py,ini,html,rst,json,cfg',
+        '--name=Makefile',
         project_name
     ]
 

@@ -1,16 +1,31 @@
-.PHONY: test unittests coveragetest coverage flaketest checkmanifest checksetup install-pipeline
+.PHONY: test clean unittests chrometests firefoxtests coveragetest coverage flaketest checkmanifest checksetup install-pipeline
 
 test: coveragetest flaketest checkmanifest checksetup
 
+clean:
+	# Erase previous coverage results
+	coverage erase
+
 unittests:
 	# Run unit tests with coverage
-	coverage run setup.py test
+	coverage run --append runtests.py tests.test_{{ project_name }}
+	coverage combine
 
-coveragetest: unittests
+chrometests:
+	# Run Chrome selenium tests
+	coverage run --append runtests.py tests.test_selenium
+	coverage combine
+
+firefoxtests:
+	# Run Firefox selenium tests
+	coverage run --append runtests.py tests.test_selenium_firefox
+	coverage combine
+
+coveragetest: clean unittests chrometests firefoxtests
 	# Generate coverage report and require minimum coverage
 	coverage report
 
-coverage: unittests
+coverage: clean unittests chrometests firefoxtests
 	# Generate test coverage html report
 	coverage html
 	@echo "Coverage report is located at ./var/htmlcov/index.html"
@@ -27,5 +42,17 @@ checksetup:
 	# Check longdescription and metadata
 	python setup.py check -msr
 
+devinstall:
+	# First activate your virtual env and the correct node version
+	# Then install, compile, and collect.
+	pip install --upgrade -e .
+	pip install --upgrade -r requirements-dev.txt
+	yarn
+	./manage.py collectstatic --noinput --link --clear
+
 install-pipeline:
+	pip install -e .
+	@echo "===== PACKAGE DEPENDENCIES ====="
+	@pip freeze | grep -ve "^-e" | sed 's/^/  /'
+	@echo "================================"
 	pip install -r requirements-dev.txt

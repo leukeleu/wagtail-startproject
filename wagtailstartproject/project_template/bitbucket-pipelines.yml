@@ -1,8 +1,51 @@
+options:
+  max-time: 10
+
 image: python:3.6
 
 pipelines:
   default:
     - step:
+        name: Python tests
+        caches:
+          - pip
         script:
           - make install-pipeline
-          - make test
+          - make unittests
+          - make flaketest
+        services:
+          - postgres
+        artifacts:
+          - .coverage
+    - step:
+        name: Chrome tests
+        caches:
+          - pip
+        script:
+          - make install-pipeline
+          - make chrometests
+        services:
+          - postgres
+          - chrome
+        artifacts:
+          - .coverage
+    - step:
+        name: Firefox tests
+        caches:
+          - pip
+        script:
+          - make install-pipeline
+          - make firefoxtests
+          - make coveragetests
+        services:
+          - postgres
+          - firefox
+
+definitions:
+  services:
+    postgres:
+      image: postgres:9.6-alpine
+    firefox:
+      image: selenium/standalone-firefox
+    chrome:
+      image: selenium/standalone-chrome
